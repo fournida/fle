@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compréhension orale A1 – La famille</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0;color:#24324a}
+header{background:#3157d5;color:white;padding:28px 20px;text-align:center}
+main{max-width:850px;margin:25px auto;padding:0 16px}
+.card{background:white;border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 4px 15px #0001}
+h1{margin:0 0 8px} h2{color:#3157d5}
+button{border:0;border-radius:12px;padding:12px 18px;background:#3157d5;color:white;font-size:16px;cursor:pointer;margin:5px}
+button:hover{opacity:.9}
+.option{display:block;background:#f0f3fa;color:#24324a;text-align:left;width:100%;margin:8px 0}
+.option.selected{outline:3px solid #3157d5}
+.correct{background:#d9f7df!important}.wrong{background:#ffe0e0!important}
+.transcription{display:none;background:#f8f8f8;border-left:4px solid #3157d5;padding:15px;margin-top:12px}
+.small{color:#667085}
+</style>
+</head>
+<body>
+<header>
+<h1>🎧 Compréhension orale A1</h1>
+<div>👨‍👩‍👧‍👦 La famille</div>
+</header>
+<main>
+
+<div class="card">
+<h2>🎯 Consigne</h2>
+<p>Écoute le dialogue. Tu peux l'écouter deux fois. Ensuite, réponds aux questions.</p>
+<button onclick="speak()">🔊 Écouter</button>
+<button onclick="stopSpeak()">⏹️ Arrêter</button>
+<p class="small">Écoute d'abord sans regarder les questions si tu peux.</p>
+</div>
+
+<div class="card">
+<h2>👂 Le dialogue</h2>
+<p><strong>Emma :</strong> Bonjour Lucas ! Tu as une grande famille ?</p>
+<p><strong>Lucas :</strong> Oui ! Nous sommes cinq à la maison : mes parents, ma sœur, mon petit frère et moi.</p>
+<p><strong>Emma :</strong> Comment s'appelle ta sœur ?</p>
+<p><strong>Lucas :</strong> Elle s'appelle Léa. Elle a quinze ans. Mon petit frère s'appelle Hugo. Il a six ans.</p>
+<p><strong>Emma :</strong> Et tes parents ?</p>
+<p><strong>Lucas :</strong> Ma mère s'appelle Sophie et mon père s'appelle Marc. Ma mère est infirmière et mon père travaille dans une école.</p>
+<p><strong>Emma :</strong> Tu as un animal ?</p>
+<p><strong>Lucas :</strong> Oui, j'ai un chat. Il s'appelle Milo !</p>
+<div id="transcription" class="transcription"><strong>Transcription :</strong><br>
+Bonjour Lucas ! Tu as une grande famille ?<br><br>
+Oui ! Nous sommes cinq à la maison : mes parents, ma sœur, mon petit frère et moi.<br><br>
+Comment s'appelle ta sœur ?<br>
+Elle s'appelle Léa. Elle a quinze ans. Mon petit frère s'appelle Hugo. Il a six ans.<br><br>
+Et tes parents ?<br>
+Ma mère s'appelle Sophie et mon père s'appelle Marc. Ma mère est infirmière et mon père travaille dans une école.<br><br>
+Tu as un animal ?<br>
+Oui, j'ai un chat. Il s'appelle Milo !
+</div>
+<button onclick="document.getElementById('transcription').style.display='block'">👁️ Afficher la transcription</button>
+</div>
+
+<div id="quiz"></div>
+<div class="card">
+<button onclick="check()">✅ Corriger</button>
+<button onclick="location.reload()">🔄 Recommencer</button>
+<div id="score"></div>
+</div>
+
+</main>
+<script>
+const questions=[
+["1. Combien de personnes vivent dans la famille de Lucas ?","5","4","6"],
+["2. Comment s'appelle la sœur de Lucas ?","Sophie","Léa","Emma"],
+["3. Quel âge a Hugo ?","5 ans","6 ans","15 ans"],
+["4. Quel est le métier de la mère de Lucas ?","Professeure","Médecin","Infirmière"],
+["5. Où travaille le père de Lucas ?","Dans une école","Dans un hôpital","Dans un magasin"],
+["6. Comment s'appelle le chat de Lucas ?","Hugo","Milo","Marc"]
+];
+const quiz=document.getElementById("quiz");
+questions.forEach((q,i)=>{
+ let c=document.createElement("div"); c.className="card";
+ c.innerHTML=`<h2>${q[0]}</h2>`+q.slice(1).map((a,j)=>`<button class="option" data-q="${i}" data-a="${j}" onclick="select(this)">${a}</button>`).join("");
+ quiz.appendChild(c);
+});
+function select(btn){
+ document.querySelectorAll(`[data-q="${btn.dataset.q}"]`).forEach(x=>x.classList.remove("selected"));
+ btn.classList.add("selected");
+}
+function check(){
+ let score=0;
+ questions.forEach((q,i)=>{
+  let buttons=[...document.querySelectorAll(`[data-q="${i}"]`)];
+  buttons.forEach(b=>b.classList.remove("correct","wrong"));
+  let chosen=buttons.find(b=>b.classList.contains("selected"));
+  if(chosen){
+   if(Number(chosen.dataset.a)===0){chosen.classList.add("correct");score++}
+   else chosen.classList.add("wrong");
+  }
+ });
+ let message=score===6?"🌟 Excellent !":score>=4?"👏 Très bien !":"💪 Continue tes efforts !";
+ document.getElementById("score").innerHTML=`🎯 Ton score : ${score} / ${questions.length}<br>${message}`;
+}
+const text=`Bonjour Lucas ! Tu as une grande famille ?
+Oui ! Nous sommes cinq à la maison : mes parents, ma sœur, mon petit frère et moi.
+Comment s'appelle ta sœur ?
+Elle s'appelle Léa. Elle a quinze ans. Mon petit frère s'appelle Hugo. Il a six ans.
+Et tes parents ?
+Ma mère s'appelle Sophie et mon père s'appelle Marc. Ma mère est infirmière et mon père travaille dans une école.
+Tu as un animal ?
+Oui, j'ai un chat. Il s'appelle Milo !`;
+function speak(){
+ speechSynthesis.cancel();
+ let u=new SpeechSynthesisUtterance(text); u.lang="fr-FR"; u.rate=.82; u.pitch=1;
+ speechSynthesis.speak(u);
+}
+function stopSpeak(){speechSynthesis.cancel();}
+</script>
+</body>
+</html>
