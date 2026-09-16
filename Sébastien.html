@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compréhension orale A1 – Se présenter</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0;color:#24324a}
+header{background:#3157d5;color:white;padding:28px 20px;text-align:center}
+main{max-width:850px;margin:25px auto;padding:0 16px}
+.card{background:white;border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 4px 15px #0001}
+h1{margin:0 0 8px} h2{color:#3157d5}
+button{border:0;border-radius:12px;padding:12px 18px;background:#3157d5;color:white;font-size:16px;cursor:pointer;margin:5px}
+.option{display:block;background:#f0f3fa;color:#24324a;text-align:left;width:100%;margin:8px 0}
+.option.selected{outline:3px solid #3157d5}
+.correct{background:#d9f7df!important}.wrong{background:#ffe0e0!important}
+#score{font-size:22px;font-weight:bold;text-align:center;padding:15px}
+.transcription{display:none;background:#f8f8f8;border-left:4px solid #3157d5;padding:15px;margin-top:12px}
+.small{color:#667085}
+</style>
+</head>
+<body>
+<header>
+<h1>🎧 Compréhension orale A1</h1>
+<div>Se présenter : Sébastien</div>
+</header>
+
+<main>
+<div class="card">
+<h2>🎯 Consigne</h2>
+<p>Écoute la présentation. Tu peux l'écouter deux fois. Ensuite, réponds aux 8 questions.</p>
+<button onclick="speak()">🔊 Écouter</button>
+<button onclick="stopSpeak()">⏹️ Arrêter</button>
+<p class="small">Astuce : écoute d'abord sans regarder les questions.</p>
+</div>
+
+<div class="card">
+<h2>👂 La présentation</h2>
+<div id="transcription" class="transcription">
+<strong>Transcription :</strong><br>
+Bonjour ! Je m'appelle Sébastien. J'ai treize ans. Je suis français et j'habite à Lausanne, en Suisse.
+<br><br>
+Je suis élève au collège. Je suis en classe de 8e. J'aime beaucoup le football et le dessin.
+<br><br>
+À l'école, j'aime les maths et l'anglais. Je n'aime pas beaucoup les sciences.
+<br><br>
+J'ai une soeur. Elle s'appelle Camille et elle a dix ans. Le week-end, j'aime jouer au football avec mes amis.
+</div>
+<button onclick="document.getElementById('transcription').style.display='block'">👁️ Afficher la transcription</button>
+</div>
+
+<div id="quiz"></div>
+
+<div class="card">
+<button onclick="check()">✅ Corriger</button>
+<button onclick="location.reload()">🔄 Recommencer</button>
+<div id="score"></div>
+</div>
+</main>
+
+<script>
+const questions=[
+["1. Comment s'appelle le garçon ?","Sébastien","Thomas","Lucas",0],
+["2. Quel âge a Sébastien ?","12 ans","13 ans","14 ans",1],
+["3. De quelle nationalité est Sébastien ?","Suisse","Français","Belge",1],
+["4. Où habite Sébastien ?","Lausanne","Genève","Sion",0],
+["5. Dans quelle classe est Sébastien ?","7e","8e","9e",1],
+["6. Qu'est-ce que Sébastien aime ?","Le football et le dessin","La danse et la musique","Le tennis et la natation",0],
+["7. Comment s'appelle la sœur de Sébastien ?","Emma","Camille","Sophie",1],
+["8. Avec qui Sébastien aime-t-il jouer au football le week-end ?","Avec sa famille","Avec ses professeurs","Avec ses amis",2]
+];
+
+const quiz=document.getElementById("quiz");
+questions.forEach((q,i)=>{
+  let c=document.createElement("div");
+  c.className="card";
+  c.innerHTML=`<h2>${q[0]}</h2>`+
+    q.slice(1,4).map((a,j)=>
+      `<button class="option" data-q="${i}" data-a="${j}" onclick="select(this)">${a}</button>`
+    ).join("");
+  quiz.appendChild(c);
+});
+
+function select(btn){
+  document.querySelectorAll(`[data-q="${btn.dataset.q}"]`)
+    .forEach(x=>x.classList.remove("selected"));
+  btn.classList.add("selected");
+}
+
+function check(){
+  let score=0;
+  questions.forEach((q,i)=>{
+    let buttons=[...document.querySelectorAll(`[data-q="${i}"]`)];
+    buttons.forEach(b=>b.classList.remove("correct","wrong"));
+    let chosen=buttons.find(b=>b.classList.contains("selected"));
+    if(chosen){
+      if(Number(chosen.dataset.a)===q[4]){
+        chosen.classList.add("correct");
+        score++;
+      }else{
+        chosen.classList.add("wrong");
+      }
+    }
+  });
+  document.getElementById("score").textContent=
+    `🎯 Ton score : ${score} / ${questions.length}`;
+}
+
+let utterance=null;
+
+function getFrenchMaleVoice(){
+  const voices=speechSynthesis.getVoices();
+  const french=voices.filter(v=>/^fr(-|_|$)/i.test(v.lang));
+  const maleWords=[
+    "male","homme","masculin","thomas","paul","pierre",
+    "nicolas","antoine","mathieu","henri","jean"
+  ];
+  return french.find(v=>maleWords.some(w=>v.name.toLowerCase().includes(w)))
+      || french.find(v=>/male|homme|masculin/i.test(v.name))
+      || french[0]
+      || null;
+}
+
+function speak(){
+  stopSpeak();
+
+  const launch=()=>{
+    utterance=new SpeechSynthesisUtterance(
+      "Bonjour. Je m'appelle Sébastien. J'ai treize ans. Je suis français et j'habite à Lausanne, en Suisse. Je suis élève au collège. Je suis en classe de huitième. J'aime beaucoup le football et le dessin. À l'école, j'aime les maths et l'anglais. Je n'aime pas beaucoup les sciences. J'ai une soeur. Elle s'appelle Camille et elle a dix ans. Le week-end, j'aime jouer au football avec mes amis."
+    );
+    utterance.lang="fr-FR";
+    utterance.rate=.80;
+    utterance.pitch=.90;
+
+    const voice=getFrenchMaleVoice();
+    if(voice) utterance.voice=voice;
+
+    speechSynthesis.speak(utterance);
+  };
+
+  const voicesNow=speechSynthesis.getVoices();
+
+  if(voicesNow.length){
+    setTimeout(launch,300);
+  }else if("onvoiceschanged" in speechSynthesis){
+    let launched=false;
+    const waitForVoices=()=>{
+      if(launched)return;
+      launched=true;
+      speechSynthesis.removeEventListener("voiceschanged",waitForVoices);
+      setTimeout(launch,200);
+    };
+    speechSynthesis.addEventListener("voiceschanged",waitForVoices);
+    setTimeout(()=>{
+      if(!launched){
+        launched=true;
+        speechSynthesis.removeEventListener("voiceschanged",waitForVoices);
+        launch();
+      }
+    },1000);
+  }else{
+    setTimeout(launch,500);
+  }
+}
+
+function stopSpeak(){
+  speechSynthesis.cancel();
+  utterance=null;
+}
+</script>
+</body>
+</html>
