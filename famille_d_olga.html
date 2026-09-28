@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compréhension orale – La famille d'Olga</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;color:#1f2937;margin:0;padding:30px}
+.container{max-width:850px;margin:auto;background:#fff;padding:35px;border-radius:18px;box-shadow:0 5px 25px #0001}
+h1{color:#2563eb} h2{margin-top:32px}
+.consigne{background:#eff6ff;padding:18px;border-radius:12px}
+button{border:0;border-radius:9px;padding:11px 18px;margin:5px;background:#2563eb;color:#fff;cursor:pointer;font-size:15px}
+button:hover{background:#1d4ed8}
+.question{margin:25px 0;padding:20px;border:1px solid #ddd;border-radius:12px}
+label{display:block;padding:9px;margin:5px 0;background:#f8fafc;border-radius:8px;cursor:pointer}
+.transcription{display:none;background:#f8fafc;padding:20px;border-left:4px solid #2563eb;margin-top:15px;line-height:1.7}
+.correct{background:#dcfce7!important} .wrong{background:#fee2e2!important}
+#result{display:none;margin-top:30px;padding:20px;border-radius:12px;background:#ecfdf5;font-size:20px;font-weight:bold}
+#voiceStatus{margin-top:8px;font-size:13px;color:#64748b}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎯 Compréhension orale – La famille d'Olga</h1>
+
+<div class="consigne">
+<strong>🎯 Consigne</strong><br><br>
+Écoute la présentation. Tu peux l'écouter deux fois. Ensuite, réponds aux 8 questions.
+<br><br>
+🔊 <button onclick="speak()">Écouter Olga</button>
+⏹️ <button onclick="stopSpeak()">Arrêter</button>
+<div id="voiceStatus"></div>
+<br>
+<strong>Astuce :</strong> écoute d'abord sans regarder les questions.
+</div>
+
+<h2>👂 La présentation</h2>
+<button onclick="toggleText()">👁️ Afficher la transcription</button>
+<div id="text" class="transcription">Bonjour ! Je m'appelle Olga. J'ai 14 ans. Je suis ukrainienne.<br><br>Maintenant, j'habite en Suisse avec ma mère.<br><br>Ma mère s'appelle Kateryna. Elle a 39 ans. Elle travaille dans une école.<br><br>Mon père habite en Allemagne, à Munich. Il travaille dans un garage.<br><br>Mes grands-parents habitent en Ukraine, près de Lviv. Ma grand-mère s'appelle Nadia. Elle a 68 ans. Mon grand-père s'appelle Petro. Il a 71 ans.<br><br>J'ai aussi une tante. Elle s'appelle Iryna. Elle habite en Allemagne avec son mari. Ils ont deux enfants : Maksym et Sofia.<br><br>J'ai un oncle. Il s'appelle Andriy. Il habite en Ukraine.<br><br>Ma famille habite en Suisse, en Allemagne et en Ukraine. Nous nous téléphonons souvent.</div>
+
+<form id="quiz">
+<div class="question"><strong>1. Comment s&#x27;appelle la fille qui présente sa famille ?</strong><label><input type="radio" name="q1" value="Olga"> Olga</label><label><input type="radio" name="q1" value="Sofia"> Sofia</label><label><input type="radio" name="q1" value="Iryna"> Iryna</label></div><div class="question"><strong>2. Quel âge a Olga ?</strong><label><input type="radio" name="q2" value="12 ans"> 12 ans</label><label><input type="radio" name="q2" value="14 ans"> 14 ans</label><label><input type="radio" name="q2" value="16 ans"> 16 ans</label></div><div class="question"><strong>3. De quelle nationalité est Olga ?</strong><label><input type="radio" name="q3" value="Allemande"> Allemande</label><label><input type="radio" name="q3" value="Ukrainienne"> Ukrainienne</label><label><input type="radio" name="q3" value="Suisse"> Suisse</label></div><div class="question"><strong>4. Dans quel pays habite Olga ?</strong><label><input type="radio" name="q4" value="En Ukraine"> En Ukraine</label><label><input type="radio" name="q4" value="En Allemagne"> En Allemagne</label><label><input type="radio" name="q4" value="En Suisse"> En Suisse</label></div><div class="question"><strong>5. Comment s&#x27;appelle la mère d&#x27;Olga ?</strong><label><input type="radio" name="q5" value="Nadia"> Nadia</label><label><input type="radio" name="q5" value="Kateryna"> Kateryna</label><label><input type="radio" name="q5" value="Iryna"> Iryna</label></div><div class="question"><strong>6. Quel âge a la mère d&#x27;Olga ?</strong><label><input type="radio" name="q6" value="37 ans"> 37 ans</label><label><input type="radio" name="q6" value="39 ans"> 39 ans</label><label><input type="radio" name="q6" value="41 ans"> 41 ans</label></div><div class="question"><strong>7. Dans quelle ville habite le père d&#x27;Olga ?</strong><label><input type="radio" name="q7" value="Berlin"> Berlin</label><label><input type="radio" name="q7" value="Munich"> Munich</label><label><input type="radio" name="q7" value="Hambourg"> Hambourg</label></div><div class="question"><strong>8. Dans quel pays habitent les grands-parents d&#x27;Olga ?</strong><label><input type="radio" name="q8" value="En Suisse"> En Suisse</label><label><input type="radio" name="q8" value="En Allemagne"> En Allemagne</label><label><input type="radio" name="q8" value="En Ukraine"> En Ukraine</label></div><div class="question"><strong>9. Comment s&#x27;appelle la grand-mère d&#x27;Olga ?</strong><label><input type="radio" name="q9" value="Nadia"> Nadia</label><label><input type="radio" name="q9" value="Sofia"> Sofia</label><label><input type="radio" name="q9" value="Claire"> Claire</label></div><div class="question"><strong>10. Comment s&#x27;appelle la tante d&#x27;Olga ?</strong><label><input type="radio" name="q10" value="Kateryna"> Kateryna</label><label><input type="radio" name="q10" value="Iryna"> Iryna</label><label><input type="radio" name="q10" value="Sofia"> Sofia</label></div><div class="question"><strong>11. Combien d&#x27;enfants la tante d&#x27;Olga a-t-elle ?</strong><label><input type="radio" name="q11" value="Un"> Un</label><label><input type="radio" name="q11" value="Deux"> Deux</label><label><input type="radio" name="q11" value="Trois"> Trois</label></div><div class="question"><strong>12. Dans combien de pays la famille d&#x27;Olga habite-t-elle ?</strong><label><input type="radio" name="q12" value="Deux"> Deux</label><label><input type="radio" name="q12" value="Trois"> Trois</label><label><input type="radio" name="q12" value="Quatre"> Quatre</label></div><button type="button" onclick="checkQuiz()">✅ Corriger</button>
+<button type="button" onclick="location.reload()">🔄 Recommencer</button>
+</form>
+
+<div id="result"></div>
+</div>
+
+<script>
+const presentation = "Bonjour ! Je m'appelle Olga. J'ai 14 ans. Je suis ukrainienne.\n\nMaintenant, j'habite en Suisse avec ma mère.\n\nMa mère s'appelle Kateryna. Elle a 39 ans. Elle travaille dans une école.\n\nMon père habite en Allemagne, à Munich. Il travaille dans un garage.\n\nMes grands-parents habitent en Ukraine, près de Lviv. Ma grand-mère s'appelle Nadia. Elle a 68 ans. Mon grand-père s'appelle Petro. Il a 71 ans.\n\nJ'ai aussi une tante. Elle s'appelle Iryna. Elle habite en Allemagne avec son mari. Ils ont deux enfants : Maksym et Sofia.\n\nJ'ai un oncle. Il s'appelle Andriy. Il habite en Ukraine.\n\nMa famille habite en Suisse, en Allemagne et en Ukraine. Nous nous téléphonons souvent.";
+const answers = {q1:"Olga",q2:"14 ans",q3:"Ukrainienne",q4:"En Suisse",q5:"Kateryna",q6:"39 ans",q7:"Munich",q8:"En Ukraine",q9:"Nadia",q10:"Iryna",q11:"Deux",q12:"Trois"};
+let voices = [];
+
+function loadVoices() { voices=speechSynthesis.getVoices(); }
+loadVoices();
+speechSynthesis.onvoiceschanged=loadVoices;
+
+function chooseFrenchVoice() {
+ const french=voices.filter(v=>/^fr(-|_)/i.test(v.lang));
+ const feminineNames=["Microsoft Julie","Microsoft Denise","Microsoft Hortense","Amélie","Amelie","Audrey","Julie","Denise","Hortense","Virginie","Céline","Celine","Marie"];
+ const preferred=french.find(v=>feminineNames.some(n=>v.name.toLowerCase().includes(n.toLowerCase())));
+ if(preferred) return preferred;
+ const feminine=french.find(v=>/female|femme|féminin|feminine/i.test(v.name));
+ return feminine||french[0]||voices[0];
+}
+
+function speak() {
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(presentation);
+ u.lang="fr-FR";
+ u.rate=.88;
+ u.pitch=1.12;
+ u.volume=1;
+ const v=chooseFrenchVoice();
+ if(v) {
+   u.voice=v;
+   document.getElementById("voiceStatus").textContent="Voix : "+v.name;
+ }
+ speechSynthesis.speak(u);
+}
+
+function stopSpeak() { speechSynthesis.cancel(); }
+
+function toggleText() {
+ const e=document.getElementById("text");
+ e.style.display=e.style.display==="block"?"none":"block";
+}
+
+function checkQuiz() {
+ let score=0;
+ for(let i=1;i<=12;i++) {
+   const s=document.querySelector(`input[name="q${i}"]:checked`);
+   document.querySelectorAll(`input[name="q${i}"]`).forEach(x=>x.parentElement.classList.remove("correct","wrong"));
+   if(s) {
+     if(s.value===answers["q"+i]) {
+       score++;
+       s.parentElement.classList.add("correct");
+     } else {
+       s.parentElement.classList.add("wrong");
+     }
+   }
+ }
+ const r=document.getElementById("result");
+ r.style.display="block";
+ r.innerHTML=`🎉 Ton score : ${score}/12<br><small>${score===12?"Excellent ! Toutes les réponses sont correctes.":score>=9?"Très bien !":"Continue tes efforts !"}</small>`;
+ r.scrollIntoView({behavior:"smooth"});
+}
+</script>
+</body>
+</html>
