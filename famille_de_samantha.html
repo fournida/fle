@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compréhension orale – La famille de Samantha</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;color:#1f2937;margin:0;padding:30px}
+.container{max-width:850px;margin:auto;background:#fff;padding:35px;border-radius:18px;box-shadow:0 5px 25px #0001}
+h1{color:#2563eb} h2{margin-top:32px}
+.consigne{background:#eff6ff;padding:18px;border-radius:12px}
+button{border:0;border-radius:9px;padding:11px 18px;margin:5px;background:#2563eb;color:#fff;cursor:pointer;font-size:15px}
+button:hover{background:#1d4ed8}
+.question{margin:25px 0;padding:20px;border:1px solid #ddd;border-radius:12px}
+label{display:block;padding:9px;margin:5px 0;background:#f8fafc;border-radius:8px;cursor:pointer}
+.transcription{display:none;background:#f8fafc;padding:20px;border-left:4px solid #2563eb;margin-top:15px;line-height:1.7}
+.correct{background:#dcfce7!important} .wrong{background:#fee2e2!important}
+#result{display:none;margin-top:30px;padding:20px;border-radius:12px;background:#ecfdf5;font-size:20px;font-weight:bold}
+#voiceStatus{margin-top:8px;font-size:13px;color:#64748b}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎯 Compréhension orale – La famille de Samantha</h1>
+<div class="consigne">
+<strong>🎯 Consigne</strong><br><br>
+Écoute la présentation. Tu peux l'écouter deux fois. Ensuite, réponds aux 8 questions.
+<br><br>
+🔊 <button onclick="speak()">Écouter Samantha</button>
+⏹️ <button onclick="stopSpeak()">Arrêter</button>
+<div id="voiceStatus"></div>
+<br><strong>Astuce :</strong> écoute d'abord sans regarder les questions.
+</div>
+
+<h2>👂 La présentation</h2>
+<button onclick="toggleText()">👁️ Afficher la transcription</button>
+<div id="text" class="transcription">Bonjour ! Je m'appelle Samantha et j'ai 14 ans. J'habite à Sion avec ma famille.<br><br>Je vais vous présenter ma famille. Mes parents s'appellent David et Claire. Mon père a 43 ans et ma mère a 41 ans.<br><br>J'ai un frère et une grande sœur. Mon frère s'appelle Thomas et il a 17 ans. Ma sœur s'appelle Emma et elle a 25 ans. Elle travaille dans un magasin.<br><br>Emma a une fille qui s'appelle Alice. Alice a 10 ans. C'est ma nièce. Je suis très proche d'elle et nous aimons beaucoup jouer ensemble.<br><br>J'ai aussi deux oncles. Mon oncle Julien a 38 ans et mon oncle Nicolas a 35 ans. Ce sont les frères de mon père.<br><br>Mon oncle Julien a deux enfants : un garçon qui s'appelle Hugo et une fille qui s'appelle Léa. Ce sont mes cousins.<br><br>Mon oncle Nicolas a une fille. Elle s'appelle Chloé. C'est aussi ma cousine.<br><br>J'aime beaucoup ma famille. Nous nous retrouvons souvent le dimanche chez mes grands-parents.</div>
+
+<form id="quiz">
+<div class="question"><strong>1. Comment s&#x27;appelle la fille qui présente sa famille ?</strong><label><input type="radio" name="q1" value="Samantha"> Samantha</label><label><input type="radio" name="q1" value="Emma"> Emma</label><label><input type="radio" name="q1" value="Léa"> Léa</label></div><div class="question"><strong>2. Quel âge a Samantha ?</strong><label><input type="radio" name="q2" value="12 ans"> 12 ans</label><label><input type="radio" name="q2" value="14 ans"> 14 ans</label><label><input type="radio" name="q2" value="16 ans"> 16 ans</label></div><div class="question"><strong>3. Comment s&#x27;appelle la grande sœur de Samantha ?</strong><label><input type="radio" name="q3" value="Emma"> Emma</label><label><input type="radio" name="q3" value="Claire"> Claire</label><label><input type="radio" name="q3" value="Chloé"> Chloé</label></div><div class="question"><strong>4. Quel âge a Emma ?</strong><label><input type="radio" name="q4" value="23 ans"> 23 ans</label><label><input type="radio" name="q4" value="25 ans"> 25 ans</label><label><input type="radio" name="q4" value="27 ans"> 27 ans</label></div><div class="question"><strong>5. Comment s&#x27;appelle la nièce de Samantha ?</strong><label><input type="radio" name="q5" value="Alice"> Alice</label><label><input type="radio" name="q5" value="Léa"> Léa</label><label><input type="radio" name="q5" value="Chloé"> Chloé</label></div><div class="question"><strong>6. Quel âge a Alice ?</strong><label><input type="radio" name="q6" value="8 ans"> 8 ans</label><label><input type="radio" name="q6" value="10 ans"> 10 ans</label><label><input type="radio" name="q6" value="12 ans"> 12 ans</label></div><div class="question"><strong>7. Combien Samantha a-t-elle d&#x27;oncles ?</strong><label><input type="radio" name="q7" value="Un"> Un</label><label><input type="radio" name="q7" value="Deux"> Deux</label><label><input type="radio" name="q7" value="Trois"> Trois</label></div><div class="question"><strong>8. Comment s&#x27;appelle la fille de l&#x27;oncle Nicolas ?</strong><label><input type="radio" name="q8" value="Emma"> Emma</label><label><input type="radio" name="q8" value="Léa"> Léa</label><label><input type="radio" name="q8" value="Chloé"> Chloé</label></div>
+<button type="button" onclick="checkQuiz()">✅ Corriger</button>
+<button type="button" onclick="location.reload()">🔄 Recommencer</button>
+</form>
+<div id="result"></div>
+</div>
+
+<script>
+const presentation = "Bonjour ! Je m'appelle Samantha et j'ai 14 ans. J'habite à Sion avec ma famille.\n\nJe vais vous présenter ma famille. Mes parents s'appellent David et Claire. Mon père a 43 ans et ma mère a 41 ans.\n\nJ'ai un frère et une grande sœur. Mon frère s'appelle Thomas et il a 17 ans. Ma sœur s'appelle Emma et elle a 25 ans. Elle travaille dans un magasin.\n\nEmma a une fille qui s'appelle Alice. Alice a 10 ans. C'est ma nièce. Je suis très proche d'elle et nous aimons beaucoup jouer ensemble.\n\nJ'ai aussi deux oncles. Mon oncle Julien a 38 ans et mon oncle Nicolas a 35 ans. Ce sont les frères de mon père.\n\nMon oncle Julien a deux enfants : un garçon qui s'appelle Hugo et une fille qui s'appelle Léa. Ce sont mes cousins.\n\nMon oncle Nicolas a une fille. Elle s'appelle Chloé. C'est aussi ma cousine.\n\nJ'aime beaucoup ma famille. Nous nous retrouvons souvent le dimanche chez mes grands-parents.";
+const answers = {q1:"Samantha",q2:"14 ans",q3:"Emma",q4:"25 ans",q5:"Alice",q6:"10 ans",q7:"Deux",q8:"Chloé"};
+let voices = [];
+function loadVoices() { voices=speechSynthesis.getVoices(); }
+loadVoices(); speechSynthesis.onvoiceschanged=loadVoices;
+
+function chooseFrenchVoice() {
+ const french=voices.filter(v=>/^fr(-|_)/i.test(v.lang));
+ const feminineNames = [
+   "Microsoft Julie","Microsoft Denise","Microsoft Hortense",
+   "Google français féminin","Amélie","Amelie","Audrey","Julie",
+   "Denise","Hortense","Virginie","Céline","Celine","Marie"
+ ];
+ const preferred=french.find(v=>feminineNames.some(n=>v.name.toLowerCase().includes(n.toLowerCase())));
+ if(preferred) return preferred;
+ // On browsers that expose gender in the voice name, prefer an explicitly feminine voice.
+ const feminine=french.find(v=>/female|femme|féminin|feminine/i.test(v.name));
+ return feminine||french[0]||voices[0];
+}
+function speak() {
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(presentation);
+ u.lang="fr-FR"; u.rate=.88; u.pitch=1.12; u.volume=1;
+ const v=chooseFrenchVoice();
+ if(v){u.voice=v;document.getElementById("voiceStatus").textContent="Voix : "+v.name;}
+ speechSynthesis.speak(u);
+}
+function stopSpeak(){speechSynthesis.cancel();}
+function toggleText(){const e=document.getElementById("text");e.style.display=e.style.display==="block"?"none":"block";}
+function checkQuiz(){
+ let score=0;
+ for(let i=1;i<=8;i++){
+  const s=document.querySelector(`input[name="q${i}"]:checked`);
+  document.querySelectorAll(`input[name="q${i}"]`).forEach(x=>x.parentElement.classList.remove("correct","wrong"));
+  if(s){if(s.value===answers["q"+i]){score++;s.parentElement.classList.add("correct")}else s.parentElement.classList.add("wrong");}
+ }
+ const r=document.getElementById("result");r.style.display="block";
+ r.innerHTML=`🎉 Ton score : ${score}/8<br><small>${score===8?"Excellent ! Toutes les réponses sont correctes.":score>=6?"Très bien !":"Continue tes efforts !"}</small>`;
+ r.scrollIntoView({behavior:"smooth"});
+}
+</script>
+</body>
+</html>
